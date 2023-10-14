@@ -3,8 +3,11 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Theme } from '@radix-ui/themes';
+import {useLocale} from 'next-intl';
+import {notFound} from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] })
+const locales = ['en', 'pl'];
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,11 +16,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params: {locale}
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  params: any
 }) {
+
+  const isValidLocale = locales.some((cur) => cur === locale);
+  if (!isValidLocale) notFound();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>
         <Theme>
           {children}
