@@ -3,6 +3,13 @@
       "title": "Siema Eniu!",
       "langPol": "Polski",
       "langEng": "Angielski",
-      "alert" : "UWAGA!"
+      "alert" : "UWAGA!"      
+    },
+    "Nav": {
+      "dashboard" : "Panel główny",
+      "myTicets" : "Zgłoszone problemy",
+      "contact" : "Kontakt",
+      "chat" : "Czat",
+      "createTicket" : "Nowe zgłoszenie"
     }
   }

@@ -1,8 +1,15 @@
 {
-    "Index": {
-      "title": "Hello world!",
-      "langPol": "Polish",
-      "langEng": "English",
-      "alert" : "DANGER!"
-    }
+  "Index": {
+    "title": "Hello world!",
+    "langPol": "Polish",
+    "langEng": "English",
+    "alert" : "DANGER!"
+  },
+  "Nav": {
+    "dashboard" : "Dashboard",
+    "myTicets" : "Tickets",
+    "contact" : "Contact",
+    "chat" : "Chat",
+    "createTicket" : "New Issue"
   }
+}
