@@ -1,9 +1,14 @@
+
 import Link from 'next/link'
 import {useTranslations} from 'next-intl';
 import React from 'react'
 import { FaDumpsterFire } from 'react-icons/fa';
+import classNames from 'classnames';
+import NavItem from './NavItem'
 
 const NavBar = () => {
+
+
   const t = useTranslations('Nav');
   const navLinks = [
     {
@@ -34,10 +39,9 @@ const NavBar = () => {
         <span className='text-md'>DumpsterFire Team</span>
       </div>
       {navLinks.map(link =>{
-        return (<div key={link.label} className='flex justify-center items-center h-10 hover:cursor-pointer hover:bg-gray-900 transition-colors hover:font-bold '>
-          <Link  href={link.href}>{t(link.label)}</Link>        
-        </div>)
-      })}
+        return (
+          <NavItem key={link.label} link={link.href} label={t(link.label)} /> 
+        )})}
     </div>
   )
 }
