@@ -1,9 +1,7 @@
-
 import Link from 'next/link'
 import {useTranslations} from 'next-intl';
 import React from 'react'
 import { FaDumpsterFire } from 'react-icons/fa';
-import classNames from 'classnames';
 import NavItem from './NavItem'
 
 const NavBar = () => {
@@ -42,6 +40,7 @@ const NavBar = () => {
         return (
           <NavItem key={link.label} link={link.href} label={t(link.label)} /> 
         )})}
+
     </div>
   )
 }

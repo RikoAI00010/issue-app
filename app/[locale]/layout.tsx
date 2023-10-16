@@ -8,6 +8,7 @@ import { Theme, ThemePanel } from '@radix-ui/themes';
 import {notFound} from 'next/navigation';
 import NavBar from './NavBar';
 import UserPanel from './userPanel';
+import AuthProvider from '../auth/Provider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,15 +35,17 @@ export default function RootLayout({
   return (
     <html lang={locale}>
       <body className={inter.variable}>
-        <Theme appearance="dark" accentColor="green" grayColor="mauve" radius="small">
-          <div className='flex'>
-            <NavBar/>
-            <div className='absolute right-0'>
-              <UserPanel/>
+        <AuthProvider>
+          <Theme appearance="dark" accentColor="green" grayColor="mauve" radius="small">
+            <div className='flex'>
+              <NavBar/>
+              <div className='absolute right-0'>
+                <UserPanel/>
+              </div>
+              {children}
             </div>
-            {children}
-          </div>
-        </Theme>
+          </Theme>
+        </AuthProvider>
         </body>
     </html>
   )
