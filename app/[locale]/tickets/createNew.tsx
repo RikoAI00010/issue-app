@@ -1,41 +1,24 @@
 'use client'
 import { Button, Dialog, Flex, Text, TextArea, TextField } from '@radix-ui/themes'
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-interface IssueForm{
-    title: String;
-    description: String;
-    status: String;
-    registerBy: Number
-    asignedTo: Number
-}
-
 const CreateNewTicket = () => {
     let [open, setOpen] = useState(false)
-    const router = useRouter()
-    const newIssue = {
-        "title" : "Second issue",
-        "description" : "Second issue desc",
-        "registerBy" : 1,
-        "status": "NEW",
-        "asignedTo" : 1
-    };
-    
-    const {register, handleSubmit} = useForm<IssueForm>({
-        defaultValues:{
-            registerBy: 1,
-            asignedTo: 1,
-            status: "OPEN",
-        }
+    const router = useRouter()    
+    let [myForm, setMyForm] = useState({
+        title: '',
+        description: '',
+        status: 'NEW',
+        registerBy: 1, 
+        asignedTo: 1
     })
     return (
 
             <Dialog.Root open={open} onOpenChange={setOpen}>
                 <Dialog.Trigger>
-                    <Button>Edit profile</Button>
+                    <Button>Add new issue</Button>
                 </Dialog.Trigger>
 
                 <Dialog.Content style={{ maxWidth: 450 }}>
@@ -50,9 +33,8 @@ const CreateNewTicket = () => {
                         Title
                         </Text>
                         <TextField.Input
-                            defaultValue="Freja Johnsen"
-                            placeholder="Enter your full name"
-                            {...register('title')}
+                            value={myForm.title}
+                            onChange={(e) => setMyForm({...myForm, title: e.target.value})}
                         />
                     </label>
                     <label>
@@ -60,23 +42,40 @@ const CreateNewTicket = () => {
                         Description
                         </Text>
                         <TextArea 
-                            placeholder="Reply to comment…" 
-                            {...register('description')}/>
+                            value={myForm.description}
+                            onChange={(e) => setMyForm({...myForm, description: e.target.value})}/>
                     </label>
                     </Flex>
 
                     <Flex gap="3" mt="4" justify="end">
                     <Dialog.Close>
-                        <Button variant="soft" color="gray">
+                        <Button variant="soft" color="gray" onClick={() =>{
+                            setMyForm({
+                                title: '',
+                                description: '',
+                                status: 'NEW',
+                                registerBy: 1, 
+                                asignedTo: 1
+                            })
+                        }}>
                         Cancel
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close>
-                        <Button onClick={handleSubmit(async (data) => {
+                        <Button onClick={(async () => {
+                            const res = await axios.post('/api/issues', {...myForm})
+                            if (res.status == 201) {
+                                setOpen(false)
+                                setMyForm({
+                                    title: '',
+                                    description: '',
+                                    status: 'NEW',
+                                    registerBy: 1, 
+                                    asignedTo: 1
+                                })
+                                router.refresh()
+                            }
 
-                            await axios.post('/api/issues', {...data})
-                            setOpen(false)
-                            router.refresh()
                         })}>Save</Button>
                     </Dialog.Close>
                     </Flex>

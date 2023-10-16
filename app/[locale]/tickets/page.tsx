@@ -4,32 +4,14 @@ import NewTicket from './createNew'
 import prisma from '@/prisma/client'
 
 const TicketsPage = async () => {
-  const issues = await prisma.issue.findMany()
-  console.log(issues);
-  
-  const tickets = [
-    {
-      id: 28031,
-      registerBy: 'Danilo Sousa',
-      title: 'Creating new user',
-      createdAt: '10.11.2023',
-      status: 'NEW'
-    },
-    {
-      id: 28032,
-      registerBy: 'Zahra Ambessa',
-      title: 'Creating new user',
-      createdAt: '08.11.2023',
-      status: 'NEW'
-    },
-    {
-      id: 28033,
-      registerBy: 'Jasper Eriksson',
-      title: 'Creating new user',
-      createdAt: '05.11.2023',
-      status: 'NEW'
-    },
-  ]
+  const issues = await prisma.issue.findMany({
+    include:{
+      registerBy:{
+        
+      }
+    }
+  })  
+
   return (
     <div className='w-full p-9'>
       <div className='h-40'>
@@ -51,9 +33,9 @@ const TicketsPage = async () => {
           return (
             <Table.Row key={ticket.id}>
               <Table.Cell>{ticket.id}</Table.Cell>
-              <Table.Cell>{ticket.registerBy}</Table.Cell>
+              <Table.Cell>{`${ticket.registerBy.firstName} ${ticket.registerBy.lastName}`}</Table.Cell>
               <Table.Cell>{ticket.title}</Table.Cell>
-              <Table.Cell>{ticket.createdAt.toString().slice(0,15)}</Table.Cell>
+              <Table.Cell>{ticket.createdAt.toString().slice(0,25)}</Table.Cell>
               <Table.Cell>{ticket.status.toString()}</Table.Cell>
             </Table.Row>
           )
