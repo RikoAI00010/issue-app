@@ -10,6 +10,7 @@
     "myTicets" : "Tickets",
     "contact" : "Contact",
     "chat" : "Chat",
-    "createTicket" : "New Issue"
+    "createTicket" : "New Issue",
+    "administration" : "Administration"
   }
 }

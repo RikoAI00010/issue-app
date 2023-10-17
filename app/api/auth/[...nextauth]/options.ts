@@ -18,7 +18,7 @@ export const options: NextAuthOptions = {
           password: { label: "Password", type: "password" }
         },
         async authorize(credentials, req) {
-          const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+          const user = { id: "1", name: "J Smith", email: "jsmith@example.com", role: 'user' }
     
           if (user) {
             return user
@@ -33,5 +33,15 @@ export const options: NextAuthOptions = {
     },
     session:{
       strategy: "jwt"
+    },
+    callbacks: {
+      jwt({ token, user }) {
+        if(user) token.role = user.role
+        return token
+      },
+      session({ session, token }) {
+        session.user.role = token.role
+        return session
+      }
     }
 }

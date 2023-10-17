@@ -19,11 +19,11 @@ const UserPanel = () => {
                 <Dialog.Trigger>
                     <div className='pr-8 pl-8'>
                         <Avatar
-                            src={session.user!.image!}
+                            src='http://testtt.test/1.png'
                             fallback="?"
                             radius='full'
                         />
-                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.name!}</span>
+                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.role!}</span>
                     </div>
                         </Dialog.Trigger>
                 <Dialog.Content>

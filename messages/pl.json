@@ -10,6 +10,7 @@
       "myTicets" : "Zgłoszone problemy",
       "contact" : "Kontakt",
       "chat" : "Czat",
-      "createTicket" : "Nowe zgłoszenie"
+      "createTicket" : "Nowe zgłoszenie",
+      "administration" : "Administracja"
     }
   }

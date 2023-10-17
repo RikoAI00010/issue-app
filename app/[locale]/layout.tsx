@@ -12,6 +12,7 @@ import { getServerSession } from "next-auth";
 import { options } from '../api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation'
 import SigninPage from './signin/page';
+import { useTranslations } from 'next-intl';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,7 +35,6 @@ export default async function RootLayout({
   const authData = await getServerSession(options);
   const isValidLocale = locales.some((cur) => cur === locale);
   if (!isValidLocale) notFound();
-
   return (
     <html lang={locale}>
       <body className={inter.variable}>
