@@ -23,13 +23,13 @@ const UserPanel = () => {
                             fallback="?"
                             radius='full'
                         />
-                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.role!}</span>
+                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.firstName!} {session.user!.lastName!}</span>
                     </div>
                         </Dialog.Trigger>
                 <Dialog.Content>
                     <div className='flex gap-4 items-center'>
 
-                        <span className='hover:cursor-pointer hover:text-gray-600 transition-colors'>ANONIMOWY ANONIM</span>
+                        <span className='hover:cursor-pointer hover:text-gray-600 transition-colors'>{session.user!.firstName!} {session.user!.lastName!}</span>
                     </div>
                 </Dialog.Content>
             </Dialog.Root>

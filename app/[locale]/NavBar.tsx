@@ -30,11 +30,6 @@ const NavBar = () => {
       role: ['user','admin']
     },
     {
-      label: 'chat',
-      href:'/chat',
-      role: ['user','admin']
-    },
-    {
       label: 'createTicket',
       href:'/tickets/new',
       role: ['user','admin']
