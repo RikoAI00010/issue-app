@@ -1,12 +1,9 @@
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "@/prisma/client";
-import { setCookie } from "nookies";
 
 export const options: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma),
     providers:[
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -18,14 +15,29 @@ export const options: NextAuthOptions = {
           username: { label: "Username", type: "text", placeholder: "jsmith" },
           password: { label: "Password", type: "password" }
         },
-        async authorize(credentials, req) {
-          const user = { id: "1", firstName: "Riko", lastName:'Rello', email: "rirelo@gmail.com", role: 'user', }
+        async authorize(credentials, req):Promise<any> {
+          // if (!credentials?.username || !credentials.password) {
+          //   return null
+          // }
           
-          if (user) {
-            return user
-          } else {
-            return null
-          }
+         try {
+            const user = await prisma.user.findFirst({
+              where:{
+                email: 'test@test.pl'
+              }
+            })
+            console.log(user);
+            
+            if (user) {
+              return user
+            } else {
+              return null
+            }            
+         } catch (error) {
+          console.log(error);
+          
+         }
+          
         }
       })
     ],
@@ -38,15 +50,16 @@ export const options: NextAuthOptions = {
     callbacks: {
       jwt({ token, user }) {
         if(user) {
-          token.role = user.role
-          token.firstName = user.firstName
-          token.lastName = user.lastName
+          token.role = user.role,
+          token.firstName = user.firstName,
+          token.lastName = user.lastName,
+          token.image = user.image
         }
         return token
       },
       session({ session, token }) {
-        session.user.role = token.role
-        session.user.firstName = token.firstName
+        session.user.role = token.role,
+        session.user.firstName = token.firstName,
         session.user.lastName = token.lastName
         return session
       }

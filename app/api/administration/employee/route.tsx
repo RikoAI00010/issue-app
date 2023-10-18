@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {z} from 'zod'
 import prisma from '@/prisma/client'
-import { getServerSession } from "next-auth/next"
-import { options } from "../../auth/[...nextauth]/options";
-
+import { roleCheck } from "@/app/lib/apiRouteSession";
 
 const createIssueSchema = z.object({
     title: z.string().min(1).max(255),
@@ -14,21 +12,18 @@ const createIssueSchema = z.object({
 })
 
 export async function POST(request: NextRequest){
-    console.log(request.cookies);
+    if (await roleCheck('admin')) {
+        return NextResponse.json('Brak uprawnień', {status: 401})
+    }
     
     return NextResponse.json('post employee', {status: 201})
 }
 
 export async function GET(request: NextRequest){
-    const session = await getServerSession(options)
-    // console.log(session);
-    // console.log(request.cookies.getAll());
 
-    if (session?.user.role != 'admin') {
-        console.log('Brak uprawnień');
+    if (await roleCheck('admin')) {
         return NextResponse.json('Brak uprawnień', {status: 401})
-        
     }
-    console.log('get employee');
+
     return NextResponse.json('get employee', {status: 200})
 }

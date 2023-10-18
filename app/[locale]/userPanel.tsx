@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 const UserPanel = () => {
     const {status, data:session } = useSession()
+    console.log(session);
     
   return (
     <div className='border border-gray-700 w-84 h-18 p-2 '>
@@ -19,11 +20,11 @@ const UserPanel = () => {
                 <Dialog.Trigger>
                     <div className='pr-8 pl-8'>
                         <Avatar
-                            src='http://testtt.test/1.png'
+                            src={session.user!.image}
                             fallback="?"
                             radius='full'
                         />
-                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.firstName!} {session.user!.lastName!}</span>
+                            <span className='hover:cursor-pointer hover:text-gray-600 transition-colors pl-4'>{session.user!.firstName} {session.user!.lastName}</span>
                     </div>
                         </Dialog.Trigger>
                 <Dialog.Content>
