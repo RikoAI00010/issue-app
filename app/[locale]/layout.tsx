@@ -39,7 +39,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={inter.variable}>
         <AuthProvider>
-          <Theme appearance="dark" accentColor="green" grayColor="mauve" radius="small">
+        <Theme appearance="dark" accentColor="crimson" grayColor="mauve" radius="small">
             {authData?
             <div className='flex'>
               <NavBar/>
@@ -49,6 +49,7 @@ export default async function RootLayout({
               {children}
             </div>:
             <SigninPage/>}
+            {/* <ThemePanel/> */}
           </Theme>
         </AuthProvider>
         </body>

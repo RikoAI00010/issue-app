@@ -23,10 +23,9 @@ export const options: NextAuthOptions = {
          try {
             const user = await prisma.user.findFirst({
               where:{
-                email: 'test@test.pl'
+                email: 'Test@test.pl'
               }
             })
-            console.log(user);
             
             if (user) {
               return user
