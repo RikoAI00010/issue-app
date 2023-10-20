@@ -5,7 +5,8 @@ interface AccountForm  {
     lastName: string,
     email: string,
     pass: string,
-    role: string,
-    company: string ,
+    roleId: string,
+    companyId: string ,
+    companyName: string ,
     avatar: Blob | null
 }

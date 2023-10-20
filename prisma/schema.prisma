@@ -28,7 +28,7 @@ model Company {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            Int      @id @default(autoincrement())
   firstName     String?
   lastName      String?
   email         String?   @unique
@@ -36,11 +36,18 @@ model User {
   emailVerified DateTime?
   lastLogin     DateTime?
   image         String?
-  role          Role      @default(CLIENT)
+  role          AccountRole?     @relation(fields: [roleId], references: [id])
+  roleId        Int?
   company       Company   @relation(fields: [companyId], references: [id])
   companyId     Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model AccountRole {
+  id Int  @id @default(autoincrement())
+  name String @unique
+  users User[]
 }
 
 enum Status {
@@ -51,11 +58,4 @@ enum Status {
   TO_VERIFY
   CLOSED
   REJECTED
-}
-
-enum Role {
-  CLIENT
-  EMPLOYEE
-  COMPANY
-  ADMIN
 }

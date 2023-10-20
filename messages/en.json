@@ -12,5 +12,21 @@
     "chat" : "Chat",
     "createTicket" : "New Issue",
     "administration" : "Administration"
+  },
+  "AccountForm" : {
+    "title" : "Create an account",
+    "description" : "Application account creation panel",
+    "first_name" : "First name",
+    "last_name" : "Last name",
+    "email" : "Email",
+    "pass" : "Password",
+    "pass_rep" : "Password repeat",
+    "avatar_btn" : "Add Avatar",
+    "role" : "Roles",
+    "company" : "Company"
+  },
+  "Interface" : {
+    "cancel" : "Cancel",
+    "save" : "Save"
   }
 }

@@ -12,27 +12,27 @@ const NavBar = () => {
     {
       label: 'administration',
       href:'/admin',
-      role: ['ADMIN']
+      role: ['Admin']
     },
     {
       label: 'dashboard',
       href:'/dashboard',
-      role: ['CLIENT','ADMIN']
+      role: ['Employee','Admin']
     },
     {
       label: 'myTicets',
       href:'/tickets',
-      role: ['CLIENT','ADMIN']
+      role: ['Employee','Admin']
     },
     {
       label: 'contact',
       href:'/contact',
-      role: ['CLIENT','ADMIN']
+      role: ['Employee','Admin']
     },
     {
       label: 'createTicket',
       href:'/tickets/new',
-      role: ['CLIENT','ADMIN']
+      role: ['Employee','Admin']
     },
   ]
 

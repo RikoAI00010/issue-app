@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {z} from 'zod'
 import prisma from '@/prisma/client'
 import { roleCheck } from "@/app/lib/apiRouteSession";
-import { Role } from "@prisma/client";
+import { AccountRole } from "@prisma/client";
 import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import mime from "mime";
@@ -12,7 +12,7 @@ const createIssueSchema = z.object({
     lastName: z.string().min(1).max(255),
     email: z.string().min(1).max(255),
     pass: z.string().min(1).max(255),
-    role: z.nativeEnum(Role)
+    // role: z.nativeEnum(AccountRole)
 })
 
 export async function POST(request: NextRequest){
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest){
         lastName: formData.get("lastName") as string | null,
         email: formData.get("email") as string | null,
         pass: formData.get("pass") as string ,
-        role: formData.get("role") as Role ,
+        role: formData.get("roleId") as string ,
         companyId: formData.get("company") as string,
     }
 
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest){
                 lastName: body.lastName,
                 email: body.email,
                 pass: body.pass,
-                role: body.role,
+                roleId: parseInt(body.role),
                 companyId : parseInt(body.companyId),
                 image: filename
             }
@@ -76,6 +76,16 @@ export async function POST(request: NextRequest){
 
         return NextResponse.json({userId: user.id}, {status: 201})
     } catch (e) {
+        console.log(e);
+        
     return NextResponse.json({ error: "Something went wrong." },{ status: 500 })
     }
+}
+
+
+export async function GET(request: NextRequest){
+    if (await roleCheck('admin')) {
+        return NextResponse.json('Brak uprawnień', {status: 401})
+    }
+    return NextResponse.json({ info: "INFO" },{ status: 200 })
 }

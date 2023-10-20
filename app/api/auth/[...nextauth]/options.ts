@@ -24,8 +24,14 @@ export const options: NextAuthOptions = {
             const user = await prisma.user.findFirst({
               where:{
                 email: 'Test@test.pl'
+              },
+              include:{
+                role: true
               }
             })
+
+            console.log(user);
+
             
             if (user) {
               return user
@@ -49,7 +55,7 @@ export const options: NextAuthOptions = {
     callbacks: {
       jwt({ token, user }) {
         if(user) {
-          token.role = user.role,
+          token.role = user.role.name,
           token.firstName = user.firstName,
           token.lastName = user.lastName,
           token.image = user.image

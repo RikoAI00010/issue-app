@@ -12,5 +12,21 @@
       "chat" : "Czat",
       "createTicket" : "Nowe zgłoszenie",
       "administration" : "Administracja"
+    },
+    "AccountForm" : {
+      "title" : "Utwórz konto",
+      "description" : "Panel tworzenia kont aplikacji",
+      "first_name" : "Imię",
+      "last_name" : "Nazwisko",
+      "email" : "Email",
+      "pass" : "Hasło",
+      "pass_rep" : "Powtórz hasło",
+      "avatar_btn" : "Dodaj Avatar",
+      "role" : "Role",
+      "company" : "Firma"
+    },
+    "Interface" : {
+      "cancel" : "Anuluj",
+      "save" : "Zapisz"
     }
   }
