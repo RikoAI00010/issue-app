@@ -12,7 +12,7 @@ const createIssueSchema = z.object({
 
 export async function POST(request: NextRequest){
     const body = await request.json()
-    console.log(body);
+
     const validation = createIssueSchema.safeParse(body)
     if (!validation.success) {
         console.log(validation.error.errors);

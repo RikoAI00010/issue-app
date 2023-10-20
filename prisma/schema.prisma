@@ -38,8 +38,8 @@ model User {
   image         String?
   role          AccountRole?     @relation(fields: [roleId], references: [id])
   roleId        Int?
-  company       Company   @relation(fields: [companyId], references: [id])
-  companyId     Int
+  company       Company?   @relation(fields: [companyId], references: [id])
+  companyId     Int?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }

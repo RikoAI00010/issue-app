@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {z} from 'zod'
 import prisma from '@/prisma/client'
 import { roleCheck } from "@/app/lib/apiRouteSession";
-import { AccountRole } from "@prisma/client";
+import { AccountRole, User } from "@prisma/client";
 import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import mime from "mime";
@@ -28,8 +28,8 @@ export async function POST(request: NextRequest){
         lastName: formData.get("lastName") as string | null,
         email: formData.get("email") as string | null,
         pass: formData.get("pass") as string ,
-        role: formData.get("roleId") as string ,
-        companyId: formData.get("company") as string,
+        roleId: formData.get("roleId") as string ,
+        companyId: formData.get("companyId") as string
     }
 
     if (!file) {
@@ -62,13 +62,14 @@ export async function POST(request: NextRequest){
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
         const filename = `${file.name.replace(/\.[^/.]+$/, "")}-${uniqueSuffix}.${mime.getExtension(file.type)}`
         await writeFile(`${uploadDir}/${filename}`, buffer)
+
         const user = await prisma.user.create({
             data:{
                 firstName: body.firstName,
                 lastName: body.lastName,
                 email: body.email,
                 pass: body.pass,
-                roleId: parseInt(body.role),
+                roleId: parseInt(body.roleId),
                 companyId : parseInt(body.companyId),
                 image: filename
             }

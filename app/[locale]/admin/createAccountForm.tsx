@@ -9,6 +9,8 @@ import {useTranslations} from 'next-intl';
 
 
 const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, roles: Array<AccountRole>}) => {
+    console.log(companies);
+    
     const t = useTranslations('AccountForm');
     const r = useTranslations('Interface');
     const clientCompanies = companies.filter((el) => {
@@ -26,8 +28,9 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         lastName: '',
         email: '',
         pass: '',
-        roleId: '',
-        companyId: '',
+        roleName: '',
+        roleId: 0,
+        companyId: 0,
         companyName: '',
         avatar: null
     })
@@ -46,19 +49,18 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         formData.append('lastName', myForm.lastName)
         formData.append('email', myForm.email)
         formData.append('pass', myForm.pass)
-        formData.append('roleId', myForm.roleId) 
-        formData.append('companyIdId', myForm.companyId)        
+        formData.append('roleId', myForm.roleId.toString()) 
+        formData.append('companyId', myForm.companyId.toString())        
         formData.append("myfile", myForm.avatar!)
-        console.log(myForm);
+       
         
 
         try {
             const res = await axios.post('/api/administration/user', formData, {
                 headers: {
                     "content-type": "multipart/form-data"
-                }})
-
-            console.log(res);
+                }
+            })            
         } catch (error) {
             console.log(error);
         }
@@ -68,8 +70,6 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         if (!Object.values(myForm).some(x => x === null || x === '')) {
             setFormValid(true)
         }
-        console.log(myForm);
-        
     }, [myForm])
 
     const inputFile = useRef<HTMLInputElement | null>(null);
@@ -77,44 +77,34 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
       inputFile.current!.click();
     };
 
-    const roleSelector = (roleId:string) =>{
-        const filteredRole = roles.filter(x => x.name == roleId)
-        return filteredRole[0].id.toString()
-    }
-      
-    const setPerms = (e: Event) =>{
-        const target = e.target as HTMLDivElement
-        setMyForm({...myForm, roleId: roleSelector(target.textContent!) ?? 'unknown'  })
-        if (target.textContent != myForm.roleId) {
-            setMyForm({...myForm, companyId: '',companyName: '',  roleId: roleSelector(target.textContent!) ?? 'unknown'  })
+    const setPerms = (selectedRole: AccountRole) =>{
+        setMyForm({...myForm, roleName: selectedRole.name, roleId: selectedRole.id})
+
+        if (selectedRole.name != myForm.roleName) {
+            setMyForm({...myForm, companyName: t('company'),  roleId: selectedRole.id, roleName: selectedRole.name })
         }
-        if (target.textContent == 'Admin') {
-            setMyForm({...myForm, companyId: 'SERWIS', roleId: roleSelector(target.textContent!) ?? 'unknown'  })
+
+        if (selectedRole.name == 'Admin') {
+            setMyForm({...myForm, companyName: '',  roleId: 1, roleName: selectedRole.name })
         }
     }
-    const setComapny = (id: number) =>{
-        setMyForm({...myForm, companyId: id.toString() ?? null })
+    const setComapny = (company: Company) =>{
+        setMyForm({...myForm, companyId: company.id, companyName: company.name })
     }
 
     const rolesForcompanyIdDropDown = [
-        'CLIENT', 'EMPLOYEE'
+        'Client', 'Employee'
     ]
 
-    const companiesList = clientCompanies.map(companyId => { 
-        return <DropdownMenu.Item key={companyId.id} onSelect={() =>setComapny(companyId.id)}>{companyId.name}</DropdownMenu.Item>})
-        
-    const rolesList = roles.map(roleId =>{
-        return <DropdownMenu.Item key={roleId.id} onSelect={setPerms}>{roleId.name}</DropdownMenu.Item>
-    })
 
-    // const companiesList = myForm.roleId == '1'? clientCompanies.map(companyId => { 
-    //     return <DropdownMenu.Item key={companyId.id} onSelect={() =>setComapny(companyId.id)}>{companyId.name}</DropdownMenu.Item>}) : 
-    //     employeeCompanies.map(companyId => { 
-    //     return <DropdownMenu.Item key={companyId.id} onSelect={() =>setComapny(companyId.id)}>{companyId.name}</DropdownMenu.Item>})
+    const companiesList = myForm.roleName == 'Client'? clientCompanies.map(company => { 
+        return <DropdownMenu.Item key={company.id} onSelect={() =>setComapny(company)} textValue={company.name}>{company.name}</DropdownMenu.Item>}) : 
+        employeeCompanies.map(company => { 
+        return <DropdownMenu.Item key={company.id} onSelect={() =>setComapny(company)} textValue={company.name}>{company.name}</DropdownMenu.Item>})
         
-    // const rolesList = roles.map(roleId =>{
-    //     return <DropdownMenu.Item key={roleId.id} onSelect={setPerms}>{roleId.name}</DropdownMenu.Item>
-    // })
+    const rolesList = roles.map(role =>{
+        return <DropdownMenu.Item key={role.id} onSelect={() => setPerms(role)} textValue={role.name}>{role.name}</DropdownMenu.Item>
+    })
 
   return (<>
     <Dialog.Root>
@@ -168,7 +158,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
             <DropdownMenu.Root>
             <DropdownMenu.Trigger >
                 <Button variant="soft" className=' w-40'>
-                {myForm.roleId ? myForm.roleId : 'Role'}
+                {myForm.roleName ? myForm.roleName : 'Role'}
                 <AiFillCaretDown />
                 </Button>
             </DropdownMenu.Trigger>
@@ -178,10 +168,10 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
             </DropdownMenu.Root>
         </div>
 
-        {rolesForcompanyIdDropDown.includes(myForm.roleId)  && <DropdownMenu.Root>
+        {rolesForcompanyIdDropDown.includes(myForm.roleName)  && <DropdownMenu.Root>
             <DropdownMenu.Trigger >
                 <Button variant="soft" className=' w-40'>
-                {myForm.companyId ? myForm.companyId : t('companyId')}
+                {myForm.companyName ? myForm.companyName : t('company')}
                 <AiFillCaretDown />
                 </Button>
             </DropdownMenu.Trigger>

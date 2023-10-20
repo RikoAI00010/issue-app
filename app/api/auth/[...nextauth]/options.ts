@@ -30,8 +30,7 @@ export const options: NextAuthOptions = {
               }
             })
 
-            console.log(user);
-
+            
             
             if (user) {
               return user

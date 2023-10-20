@@ -13,8 +13,7 @@ const NavItem = ({link, label, role}: {link:any, label: string, role :Array<stri
   }
   const {status, data:session } = useSession()
 
-    console.log(role);
-    
+
 
   return (<>
   {role.includes(session?.user.role!)? <Link  href={link}>

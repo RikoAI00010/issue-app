@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 const UserPanel = () => {
     const {status, data:session } = useSession()
-    console.log(session);
+
     
   return (
     <div className='border border-gray-700 w-84 h-18 p-2 '>
