@@ -10,7 +10,6 @@ import UserPanel from './userPanel';
 import AuthProvider from '../auth/Provider';
 import { getServerSession } from "next-auth";
 import { options } from '../api/auth/[...nextauth]/options';
-import { redirect } from 'next/navigation'
 import SigninPage from './signin/page';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
 

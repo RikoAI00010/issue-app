@@ -25,6 +25,16 @@
     "role" : "Roles",
     "company" : "Company"
   },
+  "LoginForm" : {
+    "title" : "Login panel",
+    "email" : "Email",
+    "pass" : "Password",
+    "login_btn" : "Login"
+  },
+  "Validations":{
+    "form_fields_error" : "Wrong login information",
+    "login_error" : "Wrong login data."
+  },
   "Interface" : {
     "cancel" : "Cancel",
     "save" : "Save"

@@ -16,7 +16,7 @@ const NavItem = ({link, label, role}: {link:any, label: string, role :Array<stri
 
 
   return (<>
-  {role.includes(session?.user.role!)? <Link  href={link}>
+  {role.includes(session?.user.role.name!)? <Link  href={link}>
     <div 
       key={link.label} 
       className={classNames({

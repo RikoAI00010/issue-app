@@ -2,6 +2,7 @@ import type { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/prisma/client";
+import axios from "axios";
 
 export const options: NextAuthOptions = {
     providers:[
@@ -16,19 +17,22 @@ export const options: NextAuthOptions = {
           password: { label: "Password", type: "password" }
         },
         async authorize(credentials, req):Promise<any> {
-          // if (!credentials?.username || !credentials.password) {
-          //   return null
-          // }
-          
+          if (!credentials?.username || !credentials.password) {
+            return null
+          }          
          try {
             const user = await prisma.user.findFirst({
               where:{
-                email: 'Test@test.pl'
+                email: credentials.username,
+                pass: credentials.password
               },
               include:{
                 role: true
               }
             })
+
+            console.log(user);
+            
 
             
             
@@ -54,7 +58,7 @@ export const options: NextAuthOptions = {
     callbacks: {
       jwt({ token, user }) {
         if(user) {
-          token.role = user.role.name,
+          token.role = user.role,
           token.firstName = user.firstName,
           token.lastName = user.lastName,
           token.image = user.image

@@ -25,6 +25,16 @@
       "role" : "Role",
       "company" : "Firma"
     },
+    "LoginForm" : {
+      "title" : "Panel logowania",
+      "email" : "Email",
+      "pass" : "Hasło",
+      "login_btn" : "Zaloguj"
+    },
+    "Validations":{
+      "form_fields_error" : "Błędnie wypełnione pola.",
+      "login_error" : "Błędnie dane logowania."
+    },
     "Interface" : {
       "cancel" : "Anuluj",
       "save" : "Zapisz"
