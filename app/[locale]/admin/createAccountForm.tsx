@@ -53,9 +53,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         formData.append('companyId', myForm.companyId.toString())        
         formData.append("myfile", myForm.avatar!)
        
-        
-
-        try {
+        try {           
             const res = await axios.post('/api/administration/user', formData, {
                 headers: {
                     "content-type": "multipart/form-data"
@@ -68,7 +66,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
 
     useEffect(() =>{
         if (!Object.values(myForm).some(x => x === null || x === '')) {
-            setFormValid(true)
+            myForm.companyId != 0? setFormValid(true) : setFormValid(false)
         }
     }, [myForm])
 
@@ -81,7 +79,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         setMyForm({...myForm, roleName: selectedRole.name, roleId: selectedRole.id})
 
         if (selectedRole.name != myForm.roleName) {
-            setMyForm({...myForm, companyName: t('company'),  roleId: selectedRole.id, roleName: selectedRole.name })
+            setMyForm({...myForm, companyName: t('company'),  roleId: selectedRole.id, roleName: selectedRole.name, companyId: 0 })
         }
 
         if (selectedRole.name == 'Admin') {
@@ -200,8 +198,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
                 </label>
                 <div className='flex gap-4'>
                 <Button color='gray'>{r('cancel')}</Button>
-                <Button onClick={() => formSubbmit()} >{r('save')}</Button>
-                {/* disabled={!formValid} */}
+                <Button onClick={() => formSubbmit()} disabled={!formValid}>{r('save')}</Button>
                 </div>
             </div>
         </div>
