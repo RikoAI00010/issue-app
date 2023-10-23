@@ -31,6 +31,17 @@
       "pass" : "Hasło",
       "login_btn" : "Zaloguj"
     },
+    "CompanyForm" : {
+      "title" : "Utwórz firmę",
+      "description" : "Panel tworzenia kont firm",
+      "company_name" : "Nazwa firmy",
+      "company_email" : "Email firmy",
+      "company_phone" : "Telefon kontaktowy",
+      "company_person" : "Osoba kontaktowa",
+      "pass" : "Hasło",
+      "pass_rep" : "Powtórz hasło",
+      "image_btn" : "Obraz profilowy"
+    },
     "Validations":{
       "form_fields_error" : "Błędnie wypełnione pola.",
       "login_error" : "Błędnie dane logowania."

@@ -31,6 +31,17 @@
     "pass" : "Password",
     "login_btn" : "Login"
   },
+  "CompanyForm" : {
+    "title" : "Crate company",
+    "description" : "Company create panel",
+    "company_name" : "Company name",
+    "company_email" : "Company mail",
+    "company_phone" : "Company phone",
+    "company_person" : "Contact person",
+    "pass" : "Password",
+    "pass_rep" : "Password repeat",
+    "image_btn" : "Profile picture"
+  },
   "Validations":{
     "form_fields_error" : "Wrong login information",
     "login_error" : "Wrong login data."

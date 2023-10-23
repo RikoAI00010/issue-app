@@ -39,9 +39,6 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         console.log(myForm);
     },[myForm])
 
-    const udateAvatarData = async (file:File) =>{
-        const data = new FormData()
-    }
 
     const formSubbmit = async () =>{
         const formData = new FormData()
@@ -187,7 +184,6 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
                         const file = e.target.files[0]
                         const reader = new FileReader()
                         reader.onloadend = () =>{
-                            udateAvatarData(e?.target?.files?.[0]!)
                             setUploadedImage(reader.result as string)
                             setMyForm({...myForm, avatar: e?.target?.files?.[0]!})
                         }
