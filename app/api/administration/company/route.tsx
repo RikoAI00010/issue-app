@@ -8,11 +8,13 @@ import { stat, mkdir, writeFile } from "fs/promises";
 import mime from "mime";
 
 const createIssueSchema = z.object({
-    firstName: z.string().min(1).max(255),
-    lastName: z.string().min(1).max(255),
-    email: z.string().min(1).max(255),
-    pass: z.string().min(1).max(255),
-    // role: z.nativeEnum(AccountRole)
+    name: z.string().min(1).max(255),
+    password: z.string().min(1).max(255),
+    email: z.string().email(),
+    contact: z.string().min(1).max(255),
+    contactPerson: z.string().min(1).max(255),
+    image: z.string().min(1).max(255),
+    isInternal: z.string().min(4).max(5)
 })
 
 export async function POST(request: NextRequest){
@@ -22,16 +24,20 @@ export async function POST(request: NextRequest){
     }
 
     const formData = await request.formData();
-    console.log(formData.get("name") as string);
+
     const file = formData.get("myfile") as File | null;
     const body = {
-        firstName: formData.get("firstName") as string | null,
-        lastName: formData.get("lastName") as string | null,
+        name: formData.get("name") as string | null,
+        password: formData.get("password") as string | null,
         email: formData.get("email") as string | null,
-        pass: formData.get("pass") as string ,
-        roleId: formData.get("roleId") as string ,
-        companyId: formData.get("companyId") as string
+        contact: formData.get("contact") as string ,
+        contactPerson: formData.get("contactPerson") as string ,
+        isInternal: formData.get("isInternal") as string,
+        image: formData.get("isInternal") as string
     }
+
+    console.log(body);
+    
 
     if (!file) {
         return NextResponse.json(
@@ -46,7 +52,7 @@ export async function POST(request: NextRequest){
     }
 
     const buffer = Buffer.from(await file.arrayBuffer())
-    const relativeUploadDir = `/uploads/avatars`
+    const relativeUploadDir = `/uploads/companyImages`
     const uploadDir = join(process.cwd(), "public", relativeUploadDir)
 
     try {
@@ -64,19 +70,19 @@ export async function POST(request: NextRequest){
         const filename = `${file.name.replace(/\.[^/.]+$/, "")}-${uniqueSuffix}.${mime.getExtension(file.type)}`
         await writeFile(`${uploadDir}/${filename}`, buffer)
 
-        const user = await prisma.user.create({
+        const company = await prisma.company.create({
             data:{
-                firstName: body.firstName,
-                lastName: body.lastName,
+                name: body.name!,
+                password: body.password,
                 email: body.email,
-                pass: body.pass,
-                roleId: parseInt(body.roleId),
-                companyId : parseInt(body.companyId),
+                contact: body.contact,
+                contactPerson: body.contactPerson,
+                isInternal : body.isInternal === "true"? true : false,
                 image: filename
             }
         })
 
-        return NextResponse.json({userId: user.id}, {status: 201})
+        return NextResponse.json({companyId: company.id}, {status: 201})
     } catch (e) {
         console.log(e);
         

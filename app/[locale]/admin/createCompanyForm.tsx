@@ -36,7 +36,7 @@ const CreateCompanyForm = () => {
         formData.append('contactPerson', myForm.contactPerson)     
         formData.append("password", myForm.password)
         formData.append("isInternal", myForm.isInternal) 
-        formData.append("image", myForm.image!)
+        formData.append("myfile", myForm.image!)
        
         try {           
             const res = await axios.post('/api/administration/company', formData, {
