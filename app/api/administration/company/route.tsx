@@ -35,9 +35,7 @@ export async function POST(request: NextRequest){
         isInternal: formData.get("isInternal") as string,
         image: formData.get("isInternal") as string
     }
-
-    console.log(body);
-    
+   
 
     if (!file) {
         return NextResponse.json(
@@ -47,6 +45,7 @@ export async function POST(request: NextRequest){
     }
 
     const validation = createIssueSchema.safeParse(body)
+    
     if (!validation.success) {
         return NextResponse.json(validation.error.errors, {status: 400})
     }

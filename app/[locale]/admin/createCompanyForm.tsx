@@ -27,7 +27,7 @@ const CreateCompanyForm = () => {
         console.log(myForm);
     },[myForm])
 
-
+    const closeModal = useRef<HTMLButtonElement | null>(null);
     const formSubbmit = async () =>{
         const formData = new FormData()
         formData.append('name', myForm.name)
@@ -44,7 +44,10 @@ const CreateCompanyForm = () => {
                     "content-type": "multipart/form-data"
                 }
             })  
-            console.log(res);
+           
+            if (res.status === 201) {
+                closeModal.current!.click();
+            }
                       
         } catch (error) {
             console.log(error);
@@ -138,6 +141,11 @@ const CreateCompanyForm = () => {
                 <div className='flex gap-4'>
                 <Button color='gray'>{r('cancel')}</Button>
                 <Button onClick={() => formSubbmit()} disabled={!formValid}>{r('save')}</Button>
+                <Dialog.Close ref={closeModal}>
+                    <button  className="IconButton" aria-label="Close">
+                        CLOSE
+                    </button>
+                </Dialog.Close>
                 </div>
             </div>
         </div>

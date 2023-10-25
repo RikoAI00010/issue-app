@@ -39,7 +39,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         console.log(myForm);
     },[myForm])
 
-
+    const closeModal = useRef<HTMLButtonElement | null>(null);
     const formSubbmit = async () =>{
         const formData = new FormData()
         formData.append('firstName', myForm.firstName)
@@ -55,7 +55,10 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
                 headers: {
                     "content-type": "multipart/form-data"
                 }
-            })            
+            })  
+            if (res.status === 201) {
+                closeModal.current!.click();
+            }          
         } catch (error) {
             console.log(error);
         }
