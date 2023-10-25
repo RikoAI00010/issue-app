@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import {z} from 'zod'
 import prisma from '@/prisma/client'
 import { roleCheck } from "@/app/lib/apiRouteSession";
-import { AccountRole, User } from "@prisma/client";
 import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import mime from "mime";
@@ -13,8 +12,7 @@ const createIssueSchema = z.object({
     email: z.string().email(),
     contact: z.string().min(1).max(255),
     contactPerson: z.string().min(1).max(255),
-    image: z.string().min(1).max(255),
-    isInternal: z.string().min(4).max(5)
+    isInternal: z.string()
 })
 
 export async function POST(request: NextRequest){
@@ -24,8 +22,10 @@ export async function POST(request: NextRequest){
     }
 
     const formData = await request.formData();
+    console.log(formData);
+    
 
-    const file = formData.get("myfile") as File | null;
+    const file = formData.get("image[]") as File | null;
     const body = {
         name: formData.get("name") as string | null,
         password: formData.get("password") as string | null,
@@ -33,9 +33,8 @@ export async function POST(request: NextRequest){
         contact: formData.get("contact") as string ,
         contactPerson: formData.get("contactPerson") as string ,
         isInternal: formData.get("isInternal") as string,
-        image: formData.get("isInternal") as string
-    }
-   
+        image: formData.get("isInternal") as File
+    }  
 
     if (!file) {
         return NextResponse.json(
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest){
                 email: body.email,
                 contact: body.contact,
                 contactPerson: body.contactPerson,
-                isInternal : body.isInternal === "true"? true : false,
+                isInternal : body.isInternal == "on"? true : false,
                 image: filename
             }
         })

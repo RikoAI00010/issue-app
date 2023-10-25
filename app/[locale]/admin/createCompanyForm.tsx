@@ -1,45 +1,32 @@
 'use client'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { Avatar, Button, Dialog, DropdownMenu, TextField } from '@radix-ui/themes'
-import { MdDriveFileRenameOutline, MdEmail, MdLock, MdPhoneEnabled, MdPerson2 } from 'react-icons/md'
-import { useTranslations } from 'next-intl'
 import axios from 'axios'
-import { Company } from '@prisma/client'
+import { useTranslations } from 'next-intl'
+import { Avatar, Button, Dialog, Checkbox, Flex, Text, TextField } from '@radix-ui/themes'
+import { MdDriveFileRenameOutline, MdEmail, MdLock, MdPhoneEnabled, MdPerson2 } from 'react-icons/md'
+import { createCompanySchema } from '@/app/validations/forms'
+import { useForm } from 'react-hook-form'
+import { zodResolver} from '@hookform/resolvers/zod'
+import {z} from 'zod'
+
+type CreateCompanyForm = z.infer<typeof createCompanySchema>
 
 const CreateCompanyForm = () => {
     const t = useTranslations('CompanyForm');
     const r = useTranslations('Interface');
+    const v = useTranslations('Validations');
 
     const [uploadedImage, setUploadedImage] = useState<any>()
-    const [formValid, setFormValid] = useState(false)
-    
-    const [myForm, setMyForm] = useState<any>({
-        name: '',
-        email: '',
-        password: '',
-        contact: '',
-        contactPerson: '',
-        isInternal: false,
-        image: null
+
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm<CreateCompanyForm>({
+        resolver: zodResolver(createCompanySchema)
     })
-
-    useEffect(()=>{
-        console.log(myForm);
-    },[myForm])
-
-    const closeModal = useRef<HTMLButtonElement | null>(null);
-    const formSubbmit = async () =>{
-        const formData = new FormData()
-        formData.append('name', myForm.name)
-        formData.append('email', myForm.email)
-        formData.append('contact', myForm.contact)
-        formData.append('contactPerson', myForm.contactPerson)     
-        formData.append("password", myForm.password)
-        formData.append("isInternal", myForm.isInternal) 
-        formData.append("myfile", myForm.image!)
-       
+    
+    const onFormSubmit = async (data:any) =>{
+        console.log(data);
+        console.log(data.image[0]);
         try {           
-            const res = await axios.post('/api/administration/company', formData, {
+            const res = await axios.post('/api/administration/company', data, {
                 headers: {
                     "content-type": "multipart/form-data"
                 }
@@ -47,22 +34,15 @@ const CreateCompanyForm = () => {
            
             if (res.status === 201) {
                 closeModal.current!.click();
-            }
-                      
+            }     
         } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() =>{
-        if (!Object.values(myForm).some(x => x === null || x === '')) {
-            myForm.companyId != 0? setFormValid(true) : setFormValid(false)
-        }
-    }, [myForm])
-
-    const inputFile = useRef<HTMLInputElement | null>(null);
+    const closeModal = useRef<HTMLButtonElement | null>(null);
     const onButtonClick = () => {
-      inputFile.current!.click();
+        document.getElementById('file')!.click()
     };
 
   return (<>
@@ -82,36 +62,41 @@ const CreateCompanyForm = () => {
             <TextField.Slot>
             <MdDriveFileRenameOutline height="16" width="16" />
             </TextField.Slot>
-            <TextField.Input placeholder={`${t('company_name')}...`} onChange={e => setMyForm({...myForm, name: e.target.value})}/>
+            <TextField.Input placeholder={`${t('company_name')}...`} {...register('name')}/>
         </TextField.Root>
+        {errors.name && <Text color='red'>{v(errors.name.message)}</Text>}
         
         <TextField.Root>
             <TextField.Slot>
             <MdDriveFileRenameOutline height="16" width="16" />
             </TextField.Slot>
-            <TextField.Input placeholder={`${t('company_email')}...`} onChange={e => setMyForm({...myForm, email: e.target.value})}/>
+            <TextField.Input placeholder={`${t('company_email')}...`} {...register('email')}/>
         </TextField.Root>
+        {errors.email && <Text color='red'>{v(errors.email.message)}</Text>}
 
         <TextField.Root>
             <TextField.Slot>
             <MdPhoneEnabled height="16" width="16" />
             </TextField.Slot>
-            <TextField.Input placeholder={`${t('company_phone')}...`} onChange={e => setMyForm({...myForm, contact: e.target.value})}/>
+            <TextField.Input placeholder={`${t('company_phone')}...`} {...register('contact')}/>
         </TextField.Root>
+        {errors.contact && <Text color='red'>{v(errors.contact.message)}</Text>}
 
         <TextField.Root>
             <TextField.Slot>
             <MdPerson2 height="16" width="16" />
             </TextField.Slot>
-            <TextField.Input placeholder={`${t('company_person')}...`} onChange={e => setMyForm({...myForm, contactPerson: e.target.value})}/>
+            <TextField.Input placeholder={`${t('company_person')}...`} {...register('contactPerson')}/>
         </TextField.Root>
+        {errors.contactPerson && <Text color='red'>{v(errors.contactPerson.message)}</Text>}
 
         <TextField.Root>
             <TextField.Slot>
             <MdLock height="16" width="16" />
             </TextField.Slot>
-            <TextField.Input placeholder={`${t('pass')}...`} type='password' onChange={e => setMyForm({...myForm, password: e.target.value})}/>
+            <TextField.Input placeholder={`${t('pass')}...`} type='password' {...register('password')}/>
         </TextField.Root>
+        {errors.password && <Text color='red'>{v(errors.password.message)}</Text>}
         
         <TextField.Root>
             <TextField.Slot>
@@ -119,19 +104,25 @@ const CreateCompanyForm = () => {
             </TextField.Slot>
             <TextField.Input placeholder={`${t('pass_rep')}...`} type='password' />
         </TextField.Root>
+        {errors.password && <Text color='red'>{v(errors.password.message)}</Text>}
+
+        <Text as="label" size="2">
+        <Flex gap="2">
+            <Checkbox defaultChecked {...register('isInternal')}/> {t('inner_company')}
+        </Flex>
+        </Text>
 
         <div className='flex justify-between mt-6 relative'>
                 <div className='absolute left-36 -top-1'>
                     <Avatar src={uploadedImage} fallback='!'/>
                 </div>
                 <label>
-                <input type='file' id='file' ref={inputFile} style={{display: 'none'}} accept='image/*' onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                <input type='file' id='file' {...register('image')}  style={{display: 'none'}} accept='image/*' onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     if (e?.target?.files?.[0]) {
                         const file = e.target.files[0]
                         const reader = new FileReader()
                         reader.onloadend = () =>{
                             setUploadedImage(reader.result as string)
-                            setMyForm({...myForm, image: e?.target?.files?.[0]!})
                         }
                         reader.readAsDataURL(file)
                     }
@@ -140,18 +131,19 @@ const CreateCompanyForm = () => {
                 </label>
                 <div className='flex gap-4'>
                 <Button color='gray'>{r('cancel')}</Button>
-                <Button onClick={() => formSubbmit()} disabled={!formValid}>{r('save')}</Button>
+                <Button onClick={handleSubmit(onFormSubmit)} >{r('save')}</Button>
                 <Dialog.Close ref={closeModal}>
-                    <button  className="IconButton" aria-label="Close">
-                        CLOSE
-                    </button>
                 </Dialog.Close>
                 </div>
             </div>
         </div>
+        {errors.image && <Text color='red'>{v(errors.image.message)}</Text>}
         </Dialog.Content>
     </Dialog.Root>
     </>)
 }
 
 export default CreateCompanyForm
+
+
+
