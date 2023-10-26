@@ -3,21 +3,31 @@ import React, { useRef, useState } from 'react'
 import CreateAccountForm from './createAccountForm'
 import CreateCompanyForm from './createCompanyForm'
 import prisma from '@/prisma/client'
-import { useTranslations } from 'next-intl'
+import DataViewSelector from './dataViewSelector'
 
-async function Profile() {
+const AdministratorPage = async () => {  
   const roles = await prisma.accountRole.findMany()
-  const companies = await prisma.company.findMany()
-  return <CreateAccountForm companies={companies} roles={roles}/>;
-}
+  const companies = await prisma.company.findMany({
+    select:{
+      id: true,
+      name: true,
+      email: true,
+      contact: true,
+      contactPerson: true,
+      isInternal: true,
+      image: true,
+      password: false
+    }
+  })
+  const companiesFullData = await prisma.company.findMany()
 
-const AdministratorPage = () => {  
   return (
     <div className='flex gap-4 flex-col w-full mt-20 items-center'>
-      <div className='flex gap-4 flex-col p-4 '>
-        <Profile/>
+      <div className='flex gap-4 flex-col p-4 items-start'>
+        <CreateAccountForm companies={companies} roles={roles}/>
         <CreateCompanyForm/>
       </div>
+        <DataViewSelector companies={companiesFullData}/>
     </div>
   )
 }

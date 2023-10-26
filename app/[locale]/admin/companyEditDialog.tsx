@@ -4,116 +4,129 @@ import axios from 'axios'
 import { useTranslations } from 'next-intl'
 import { Avatar, Button, Dialog, Checkbox, Flex, Text } from '@radix-ui/themes'
 import { MdDriveFileRenameOutline, MdLock, MdPhoneEnabled, MdPerson2, MdMail } from 'react-icons/md'
-import { createCompanySchema } from '@/app/validations/forms'
+import { updateCompanySchema } from '@/app/validations/forms'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver} from '@hookform/resolvers/zod'
 import {z} from 'zod'
 import ErrorLabel from '../[components]/formElements/errorLabel'
 import FormTextField from '../[components]/formElements/formTextField'
 
-type CreateCompanyForm = z.infer<typeof createCompanySchema>
+type CreateCompanyForm = z.infer<typeof updateCompanySchema>
 
-const CreateCompanyForm = () => {
+const CreateCompanyForm = (
+    {
+        isOpen,
+        modalData,
+        closeModalHandler
+    } : any
+    ) => {
     const [uploadedImage, setUploadedImage] = useState<any>()
-    const [dialogOpen, setDialogOpen] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(isOpen)
+    const [companyData, setCompanyData] = useState(modalData)
+
+    useEffect(() =>{
+        setDialogOpen(isOpen)
+        reset({
+            ...modalData
+        });
+        console.log(isOpen);    
+    }, [isOpen])
+
+    useEffect(() =>{
+        console.log(modalData);    
+    }, [modalData])
 
     const onInvalid = (errors:any) => console.error(errors)
 
     const t = useTranslations('CompanyForm');
     const r = useTranslations('Interface');
 
-    const { register, handleSubmit, reset, control, formState: { errors, isValid } } = useForm<CreateCompanyForm>({
-        resolver: zodResolver(createCompanySchema),
-        defaultValues:{
-            name: '',
-            password: '',
-            email: '',
-            contact: '',
-            contactPerson: '',
-            isInternal: false,
-            image: null
-        }
+    const preloadValuse = {
+        id: companyData.id,
+        name: companyData.name,
+        password: companyData.password,
+        email: companyData.email ,
+        contact: companyData.contact,
+        contactPerson: companyData.contactPerson,
+        isInternal: companyData.isInternal,
+        image: companyData.image
+    }
+
+    const { register, handleSubmit, reset, setValue, control, formState: { errors, isValid } } = useForm<CreateCompanyForm>({
+        resolver: zodResolver(updateCompanySchema),
+        defaultValues: preloadValuse
     })
 
     const cancelForm = () =>{
-        setDialogOpen(false)
+        closeModalHandler('close')
         setUploadedImage([])
         reset()
     }
 
-    const onFormSubmit = async (data:any) =>{        
-        try {           
-            const res = await axios.post('/api/administration/company', data, {
-                headers: {
-                    "content-type": "multipart/form-data"
-                }
-            })              
+    const onFormSubmit = async (data:any) =>{     
+        console.log(data);
            
-            if (res.status === 201) {
-                setDialogOpen(false)
-                setUploadedImage([])
-                reset()
-            }     
-        } catch (error) {
-            console.error(error);
-        }
+        // try {           
+        //     const res = await axios.patch('/api/administration/company', data, {
+        //         headers: {
+        //             "content-type": "multipart/form-data"
+        //         }
+        //     })              
+           
+        //     if (res.status === 201) {
+        //         closeModalHandler('close')
+        //         setUploadedImage([])
+        //         reset()
+        //     }     
+        // } catch (error) {
+        //     console.error(error);
+        // }
     }
 
     return (<>
         <Dialog.Root open={dialogOpen}>
-            <Dialog.Trigger>
-            <Button onClick={() => setDialogOpen(true)}>{t('title')}</Button>
-            </Dialog.Trigger>
             <Dialog.Content className='fixed w-fit'>
             <div className='flex flex-col gap-3 relative'>
 
-            <Dialog.Title>{t('title')}</Dialog.Title>
+            <Dialog.Title>EDYCJA FIRMY</Dialog.Title>
             <Dialog.Description size="2" mb="4">
-            {t('description')}
+            {t('edit_description')}
             </Dialog.Description>
 
             <FormTextField
                 icon={<MdDriveFileRenameOutline height="16" width="16" />}
-                placeholder={`${t('company_name')}...`}
+                placeholder={modalData.name}
                 regFunc={register('name')}
                 error={<ErrorLabel error={errors.name}/>}
             />
 
             <FormTextField
                 icon={<MdMail height="16" width="16" />}
-                placeholder={`${t('company_email')}...`}
+                placeholder={modalData.email}
                 regFunc={register('email')}
                 error={<ErrorLabel error={errors.email}/>}
             />
 
             <FormTextField
                 icon={<MdPhoneEnabled height="16" width="16" />}
-                placeholder={`${t('company_phone')}...`}
+                placeholder={modalData.contact}
                 regFunc={register('contact')}
                 error={<ErrorLabel error={errors.contact}/>}
             />
 
             <FormTextField
                 icon={<MdPerson2 height="16" width="16" />}
-                placeholder={`${t('company_person')}...`}
+                placeholder={modalData.contactPerson}
                 regFunc={register('contactPerson')}
                 error={<ErrorLabel error={errors.contactPerson}/>}
             />
 
             <FormTextField
                 icon={<MdLock height="16" width="16" />}
-                placeholder={`${t('pass')}...`}
+                placeholder={modalData.contactPerson}
                 regFunc={register('password')}
                 error={<ErrorLabel error={errors.password}/>}
                 type='password'
-            />
-
-            <FormTextField
-                icon = {<MdLock height="16" width="16" />}
-                placeholder = {`${t('pass_rep')}...`}
-                regFunc = {register('password')}
-                error = {<ErrorLabel error={errors.password}/>}
-                type = 'password'
             />
 
             <Text as="label" size="2">

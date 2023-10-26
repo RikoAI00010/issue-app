@@ -34,6 +34,7 @@
     "CompanyForm" : {
       "title" : "Utwórz firmę",
       "description" : "Panel tworzenia kont firm",
+      "edit_description" : "Panel edycji konta firmy",
       "company_name" : "Nazwa firmy",
       "company_email" : "Email firmy",
       "company_phone" : "Telefon kontaktowy",

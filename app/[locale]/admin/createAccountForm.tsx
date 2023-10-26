@@ -8,7 +8,7 @@ import { Company, AccountRole, User } from '@prisma/client'
 import {useTranslations} from 'next-intl';
 
 
-const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, roles: Array<AccountRole>}) => {   
+const CreateAccountForm = ({companies, roles} : {companies: Array<any>, roles: Array<AccountRole>}) => {   
     const t = useTranslations('AccountForm');
     const r = useTranslations('Interface');
     const clientCompanies = companies.filter((el) => {
