@@ -49,7 +49,7 @@
       "name_not_valid_short" : "Nazwa powinna zawierać minimalnie 2 litery.",
       "name_not_valid_long" : "Nazwa może zawierać maksymalnie 70 liter.",
       "name_not_valid_characters" : "Nazwa powinna zawierać tylko litery",
-      "password_not_valid_weak" : "Hasło jest za słabe. Wymagane: 1 wielka litera, 1 mała litera, 1 cyfra 1 znak secjalny, minimalna długość 8 znaków",
+      "password_not_valid_weak" : "Hasło jest za słabe. Wymagane: 1 wielka litera, 1 mała litera, 1 cyfra 1 znak specjalny, minimalna długość 8 znaków",
       "email_not_valid" : "Adres mailowy jest błędny.",
       "contact_not_valid_short" : "Numer kontaktowy powinien zawierać 9 cyfr.",
       "contact_not_valid_long" : "Numer kontaktowy może zawierać maksymalnie 9 cyfr.",

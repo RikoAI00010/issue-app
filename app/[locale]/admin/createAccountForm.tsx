@@ -8,9 +8,7 @@ import { Company, AccountRole, User } from '@prisma/client'
 import {useTranslations} from 'next-intl';
 
 
-const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, roles: Array<AccountRole>}) => {
-    console.log(companies);
-    
+const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, roles: Array<AccountRole>}) => {   
     const t = useTranslations('AccountForm');
     const r = useTranslations('Interface');
     const clientCompanies = companies.filter((el) => {
@@ -35,10 +33,6 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
         avatar: null
     })
 
-    useEffect(()=>{
-        console.log(myForm);
-    },[myForm])
-
     const closeModal = useRef<HTMLButtonElement | null>(null);
     const formSubbmit = async () =>{
         const formData = new FormData()
@@ -60,7 +54,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<Company>, role
                 closeModal.current!.click();
             }          
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 

@@ -77,7 +77,7 @@ export async function POST(request: NextRequest){
 
         return NextResponse.json({userId: user.id}, {status: 201})
     } catch (e) {
-        console.log(e);
+        console.error(e);
         
     return NextResponse.json({ error: "Something went wrong." },{ status: 500 })
     }

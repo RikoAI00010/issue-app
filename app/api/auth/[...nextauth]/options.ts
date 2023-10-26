@@ -31,18 +31,13 @@ export const options: NextAuthOptions = {
               }
             })
 
-            console.log(user);
-            
-
-            
-            
             if (user) {
               return user
             } else {
               return null
             }            
          } catch (error) {
-          console.log(error);
+          console.error(error);
           
          }
           

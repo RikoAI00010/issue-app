@@ -40,11 +40,24 @@
     "company_person" : "Contact person",
     "pass" : "Password",
     "pass_rep" : "Password repeat",
-    "image_btn" : "Profile picture"
+    "image_btn" : "Profile picture",
+    "inner_company" : "Jednostka wewnętrzna"
   },
   "Validations":{
-    "form_fields_error" : "Wrong login information",
-    "login_error" : "Wrong login data."
+    "form_fields_error" : "Błędnie wypełnione pola.",
+    "login_error" : "Błędnie dane logowania.",
+    "name_not_valid_short" : "Nazwa powinna zawierać minimalnie 2 litery.",
+    "name_not_valid_long" : "Nazwa może zawierać maksymalnie 70 liter.",
+    "name_not_valid_characters" : "Nazwa powinna zawierać tylko litery",
+    "password_not_valid_weak" : "Hasło jest za słabe. Wymagane: 1 wielka litera, 1 mała litera, 1 cyfra 1 znak specjalny, minimalna długość 8 znaków",
+    "email_not_valid" : "Adres mailowy jest błędny.",
+    "contact_not_valid_short" : "Numer kontaktowy powinien zawierać 9 cyfr.",
+    "contact_not_valid_long" : "Numer kontaktowy może zawierać maksymalnie 9 cyfr.",
+    "contact_not_valid_not_digits" : "Numer kontaktowy powinien zawierać 9 cyfr.",
+    "contactPerson_name_not_valid_short" : "Dane osoby kontaktowej nie mogą być puste.",
+    "contactPerson_name_not_valid_long" : "Przekroczono ilość znaków dla danych osoby kontaktowej.",
+    "contactPerson_name_not_valid_characters" : "Dane osoby kontaktowej zawierają błędne znaki.",
+    "file_not_valid_data" : "Plik obrazu nie może być pusty."
   },
   "Interface" : {
     "cancel" : "Cancel",
