@@ -12,7 +12,7 @@ const FormCheckboxField = ({regFunc, label}: FormCheckboxField) => {
     <div>
         <Text as="label" size="2">
         <Flex gap="2">
-            <Checkbox ref={regFunc}/> {label}
+            <Checkbox ref={regFunc} /> {label}
         </Flex>
         </Text>
     </div>

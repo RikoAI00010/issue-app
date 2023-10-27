@@ -13,7 +13,7 @@ import FormTextField from '../[components]/formElements/formTextField'
 
 type CreateCompanyForm = z.infer<typeof updateCompanySchema>
 
-const CreateCompanyForm = (
+const UserEditDialog = (
     {
         isOpen,
         modalData,
@@ -189,7 +189,7 @@ const CreateCompanyForm = (
     </>)
 }
 
-export default CreateCompanyForm
+export default UserEditDialog
 
 
 

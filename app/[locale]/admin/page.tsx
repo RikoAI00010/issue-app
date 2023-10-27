@@ -7,6 +7,29 @@ import DataViewSelector from './dataViewSelector'
 
 const AdministratorPage = async () => {  
   const roles = await prisma.accountRole.findMany()
+  const users = await prisma.user.findMany({
+    select:{
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      emailVerified: true,
+      lastLogin: true,
+      image: true,
+      createdAt: true,
+      updatedAt: true,
+      role: {
+        select:{
+          name: true
+        }
+      },
+      company:{
+        select:{
+          name: true
+        }
+      }
+    }
+  })
   const companies = await prisma.company.findMany({
     select:{
       id: true,
@@ -27,7 +50,7 @@ const AdministratorPage = async () => {
         <CreateAccountForm companies={companies} roles={roles}/>
         <CreateCompanyForm/>
       </div>
-        <DataViewSelector companies={companiesFullData}/>
+        <DataViewSelector companies={companiesFullData} users={users}/>
     </div>
   )
 }

@@ -19,30 +19,26 @@ const CompanyList = ({companies}: any) => {
     return (
         <>
             <CompanyEditDialog isOpen={isOpen} closeModalHandler={openAndCloseModal} modalData={modalCompany}/>
-            <Table.Root className='mb-3'>
+            <Table.Root className='mb-3' variant='surface'>
                 <Table.Header>
                     <Table.Row>
-                    <Table.ColumnHeaderCell>Company Name</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Contact number</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Contact person</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell justify='center'>Company Name</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell justify='center'>Email</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell justify='center'>Contact number</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell justify='center'>Contact person</Table.ColumnHeaderCell>
                     </Table.Row>
                 </Table.Header>
-            </Table.Root>
-            <div className='w-full h-[60vh] overflow-auto'>
-                <Table.Root>
-                    <Table.Body className=''>
+                    <Table.Body>
                     {companyList.map((company:any) =>{
                         return <Table.Row key={company.id} onClick={() =>openAndCloseModal('open', company.id)} className='hover:bg-gray-500 hover:cursor-pointer transition-colors'>
-                            <Table.Cell width={290}>{company.name}</Table.Cell>
-                            <Table.Cell justify={'center'}>{company.email}</Table.Cell>
-                            <Table.Cell>{company.contact}</Table.Cell>
-                            <Table.Cell justify={'start'} width={490}>{company.contactPerson}</Table.Cell>
+                            <Table.Cell justify='center'>{company.name}</Table.Cell>
+                            <Table.Cell justify='center'>{company.email}</Table.Cell>
+                            <Table.Cell justify='center'>{company.contact}</Table.Cell>
+                            <Table.Cell justify='center'>{company.contactPerson}</Table.Cell>
                         </Table.Row>
                     })}
                     </Table.Body>   
             </Table.Root>
-            </div>
         </>
     )
 }
