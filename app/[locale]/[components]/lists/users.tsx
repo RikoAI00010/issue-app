@@ -9,6 +9,7 @@ const UsersLlist = ({users}: any) => {
     const [usersList, setUsersList] = useState(users)
     const [modalUsers, setModalUsers] = useState({})
     const [sortedUsersList, setSortUsersList] = useState<Array<any>>(users)
+    const [filteredUsers, setFilteredUsers] = useState<Array<any>>()
     const [sortOrder, setSortOrder] = useState('asc')
     const [isOpen, setIsOpen] = useState<boolean>(false)
     console.log(users);
@@ -20,10 +21,6 @@ const UsersLlist = ({users}: any) => {
         }     
     }
 
-    useEffect(()=>{
-        console.log('zmiana tablicy');
-    }, [sortedUsersList])
-
     const orderBy = (target: string) =>{
         let sorted: any
         let resorted: any
@@ -32,100 +29,100 @@ const UsersLlist = ({users}: any) => {
 
         switch (target) {
             case 'idUp':
-                sorted = [...users].sort((a:any,b:any) => a.id - b.id)     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.id - b.id)     
                 setSortUsersList(sorted)
             break
             case 'idDown':
-                sorted = [...users].sort((a:any,b:any) => b.id - a.id)              
+                sorted = [...sortedUsersList].sort((a:any,b:any) => b.id - a.id)              
                 setSortUsersList(sorted)
             break
 
             case 'firstnameUp':
-                sorted = [...users].sort((a:any,b:any) => a.firstName.localeCompare(b.firstName))     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.firstName.localeCompare(b.firstName))     
                 setSortUsersList(sorted)
             break
             case 'firstnameDown':
-                sorted = [...users].sort((a:any,b:any) => a.firstName.localeCompare(b.firstName))
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.firstName.localeCompare(b.firstName))
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'lastnameUp':
-                sorted = [...users].sort((a:any,b:any) => a.lastName.localeCompare(b.lastName))     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.lastName.localeCompare(b.lastName))     
                 setSortUsersList(sorted)
             break
             case 'lastnameDown':
-                sorted = [...users].sort((a:any,b:any) => a.lastName.localeCompare(b.lastName))
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.lastName.localeCompare(b.lastName))
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'roleUp':
-                sorted = [...users].sort((a:any,b:any) => a.role.name.localeCompare(b.role.name))     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.role.name.localeCompare(b.role.name))     
                 setSortUsersList(sorted)
             break
             case 'roleDown':
-                sorted = [...users].sort((a:any,b:any) => a.role.name.localeCompare(b.role.name))
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.role.name.localeCompare(b.role.name))
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'companyUp':
-                sorted = [...users].sort((a:any,b:any) => a.comapny?.name?.localeCompare(b.comapny?.name))     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.comapny?.name?.localeCompare(b.comapny?.name))     
                 setSortUsersList(sorted)
             break
             case 'companyDown':
-                sorted = [...users].sort((a:any,b:any) => a.comapny?.name?.localeCompare(b.comapny?.name))
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.comapny?.name?.localeCompare(b.comapny?.name))
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'emailUp':
-                sorted = [...users].sort((a:any,b:any) => a.email.localeCompare(b.email))     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.email.localeCompare(b.email))     
                 setSortUsersList(sorted)
             break
             case 'emailDown':
-                sorted = [...users].sort((a:any,b:any) => a.email.localeCompare(b.email))
+                sorted = [...sortedUsersList].sort((a:any,b:any) => a.email.localeCompare(b.email))
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'emailVerUp':            
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.emailVerified) - Date.parse(b.emailVerified) )     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.emailVerified) - Date.parse(b.emailVerified) )     
                 setSortUsersList(sorted)
             break
             case 'emailVerDown':
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.emailVerified) - Date.parse(b.emailVerified) )  
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.emailVerified) - Date.parse(b.emailVerified) )  
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'createdUp':                        
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.createdAt) - Date.parse(b.createdAt) )     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.createdAt) - Date.parse(b.createdAt) )     
                 setSortUsersList(sorted)
             break
             case 'createdDown':
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.createdAt) - Date.parse(b.createdAt) )  
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.createdAt) - Date.parse(b.createdAt) )  
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'lastLoginUp':                        
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.lastLogin) - Date.parse(b.lastLogin) )     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.lastLogin) - Date.parse(b.lastLogin) )     
                 setSortUsersList(sorted)
             break
             case 'lastLoginDown':
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.lastLogin) - Date.parse(b.lastLogin) )  
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.lastLogin) - Date.parse(b.lastLogin) )  
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
 
             case 'updateDateUp':                        
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt) )     
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt) )     
                 setSortUsersList(sorted)
             break
             case 'updateDateDown':
-                sorted = [...users].sort((a:any,b:any) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt) )  
+                sorted = [...sortedUsersList].sort((a:any,b:any) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt) )  
                 resorted = sorted.reverse()
                 setSortUsersList(resorted)
             break
@@ -133,6 +130,24 @@ const UsersLlist = ({users}: any) => {
             default:
             break;
         }         
+    }
+
+
+    const filterData = (key:string, data: string) =>{
+        const usersToFilter = [...users]
+        let filteredUsers;
+        if (key == 'role' || key == 'company') {
+            console.log('role lub company');
+            filteredUsers = usersToFilter.filter(x => x[key].name.toLowerCase().includes(data.toLowerCase()))
+        } else {
+            if (key == 'id') {
+                filteredUsers = usersToFilter.filter(x => x[key].toString().includes(data.toLowerCase()))
+            } else {
+                filteredUsers = usersToFilter.filter(x => x[key].toLowerCase().includes(data.toLowerCase()))
+            }
+        }
+
+        setSortUsersList(filteredUsers)
     }
 
   return (
@@ -144,7 +159,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="ID" />
+                        <TextField.Input placeholder="ID" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('id', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
@@ -152,7 +167,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="Firstname" />
+                        <TextField.Input placeholder="Firstname" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('firstName', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
@@ -160,7 +175,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="Lastname" />
+                        <TextField.Input placeholder="Lastname" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('lastName', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
@@ -168,7 +183,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="Role" />
+                        <TextField.Input placeholder="Role" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('role', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
@@ -176,7 +191,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="Company" />
+                        <TextField.Input placeholder="Company" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('company', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
@@ -184,7 +199,7 @@ const UsersLlist = ({users}: any) => {
                         <TextField.Slot>
                             <AiTwotoneFilter height="16" width="16" />
                         </TextField.Slot>
-                        <TextField.Input placeholder="Email" />
+                        <TextField.Input placeholder="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => filterData('email', e.target.value)}/>
                     </TextField.Root>
                 </div>
                 <div>
