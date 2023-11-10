@@ -29,7 +29,7 @@ const FormTextField = ({icon, placeholder, regFunc, error, type='text', setValue
         <TextField.Slot>
             {icon}
         </TextField.Slot>
-        <TextField.Input type={type} placeholder={placeholder} {...regFunc} disabled={disableField}  />
+        <TextField.Input type={type} placeholder={placeholder} {...regFunc} {...setValue} />
     </TextField.Root>
     {error}
     </div>

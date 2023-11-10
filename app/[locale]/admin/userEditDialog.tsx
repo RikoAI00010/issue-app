@@ -4,14 +4,14 @@ import axios from 'axios'
 import { useTranslations } from 'next-intl'
 import { Avatar, Button, Dialog, Checkbox, Flex, Text } from '@radix-ui/themes'
 import { MdDriveFileRenameOutline, MdLock, MdPhoneEnabled, MdPerson2, MdMail } from 'react-icons/md'
-import { updateCompanySchema } from '@/app/validations/forms'
+import { updateUserSchema } from '@/app/validations/forms'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver} from '@hookform/resolvers/zod'
 import {z} from 'zod'
 import ErrorLabel from '../[components]/formElements/errorLabel'
 import FormTextField from '../[components]/formElements/formTextField'
 
-type CreateCompanyForm = z.infer<typeof updateCompanySchema>
+type UpdateUserForm = z.infer<typeof updateUserSchema>
 
 const UserEditDialog = (
     {
@@ -21,19 +21,7 @@ const UserEditDialog = (
     } : any
     ) => {
     const [uploadedImage, setUploadedImage] = useState<any>()
-    const [dialogOpen, setDialogOpen] = useState(isOpen)
-    const [companyData, setCompanyData] = useState(modalData)
-    const [isCompanyInternal, setIsCompanyInternal] = useState(false)
-
-    useEffect(() =>{
-        setDialogOpen(isOpen)
-        reset({
-            ...modalData
-        });
-        setValue('isInternal', modalData.isInternal)
-        console.log(isOpen);  
-        setIsCompanyInternal(modalData.isInternal)  
-    }, [isOpen])
+    const [userData, setUserData] = useState(modalData)
 
     useEffect(() =>{
         console.log(modalData);    
@@ -43,21 +31,21 @@ const UserEditDialog = (
     const onInvalid = (errors:any) => console.error(errors)
 
     const t = useTranslations('CompanyForm');
-    const r = useTranslations('Interface');
+    const r = useTranslations('Interface');   
 
     const preloadValuse = {
-        id: companyData.id,
-        name: companyData.name,
-        password: companyData.password,
-        email: companyData.email ,
-        contact: companyData.contact,
-        contactPerson: companyData.contactPerson,
-        isInternal: companyData.isInternal,
-        image: companyData.image
+        id: userData?.id,
+        firstName: userData.firstname,
+        lastName: userData.lastName,
+        password: userData?.password,
+        email: userData?.email,
+        role: userData?.role?.name,
+        company: userData?.company?.name,
+        image: userData?.image
     }
 
-    const { register, handleSubmit, reset, setValue, control, formState: { errors, isValid } } = useForm<CreateCompanyForm>({
-        resolver: zodResolver(updateCompanySchema),
+    const { register, handleSubmit, reset, setValue, control, formState: { errors, isValid } } = useForm<UpdateUserForm>({
+        resolver: zodResolver(updateUserSchema),
         defaultValues: preloadValuse
     })
 
@@ -88,7 +76,7 @@ const UserEditDialog = (
     }
 
     return (<>
-        <Dialog.Root open={dialogOpen}>
+        <Dialog.Root open={isOpen}>
             <Dialog.Content className='fixed w-fit'>
             <div className='flex flex-col gap-3 relative'>
 
@@ -101,9 +89,16 @@ const UserEditDialog = (
 
             <FormTextField
                 icon={<MdDriveFileRenameOutline height="16" width="16" />}
-                placeholder={modalData.name}
-                regFunc={register('name')}
-                error={<ErrorLabel error={errors.name}/>}
+                placeholder='Firstname'
+                regFunc={register('firstName')}
+                error={<ErrorLabel error={errors.firstName}/>}
+            />
+
+            <FormTextField
+                icon={<MdPhoneEnabled height="16" width="16" />}
+                placeholder={modalData.lastName}
+                regFunc={register('lastName')}
+                error={<ErrorLabel error={errors.lastName}/>}
             />
 
             <FormTextField
@@ -113,45 +108,21 @@ const UserEditDialog = (
                 error={<ErrorLabel error={errors.email}/>}
             />
 
-            <FormTextField
-                icon={<MdPhoneEnabled height="16" width="16" />}
-                placeholder={modalData.contact}
-                regFunc={register('contact')}
-                error={<ErrorLabel error={errors.contact}/>}
-            />
 
             <FormTextField
                 icon={<MdPerson2 height="16" width="16" />}
                 placeholder={modalData.contactPerson}
-                regFunc={register('contactPerson')}
-                error={<ErrorLabel error={errors.contactPerson}/>}
+                regFunc={register('company')}
+                error={<ErrorLabel error={errors.company}/>}
             />
 
             <FormTextField
                 icon={<MdLock height="16" width="16" />}
-                placeholder={modalData.contactPerson}
+                placeholder={modalData.password}
                 regFunc={register('password')}
                 error={<ErrorLabel error={errors.password}/>}
                 type='password'
             />
-
-            <Text as="label" size="2">
-                <Flex gap="2">
-                <Controller
-                    name="isInternal" 
-                    control={control}                    
-                    render={({ field }) => (
-                        <Checkbox 
-                            value={undefined}
-                            checked={field.value}
-                            onCheckedChange={field.onChange}                            
-                        />
-                        
-                    )}>
-                </Controller>
-                <Text>{t('inner_company')}</Text>
-                </Flex>
-            </Text>
 
             <div className='flex justify-between mt-6 relative'>
                 <div className='absolute left-36 -top-1'>

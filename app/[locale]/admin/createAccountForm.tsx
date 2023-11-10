@@ -20,6 +20,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<any>, roles: A
 
     const [uploadedImage, setUploadedImage] = useState<any>()
     const [formValid, setFormValid] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
     
     const [myForm, setMyForm] = useState<AccountForm>({
         firstName: '',
@@ -69,6 +70,11 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<any>, roles: A
       inputFile.current!.click();
     };
 
+    const cancelForm = () =>{
+        setDialogOpen(false)
+        setUploadedImage([])
+    }
+
     const setPerms = (selectedRole: AccountRole) =>{
         setMyForm({...myForm, roleName: selectedRole.name, roleId: selectedRole.id})
 
@@ -99,9 +105,9 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<any>, roles: A
     })
 
   return (<>
-    <Dialog.Root>
+    <Dialog.Root open={dialogOpen}>
         <Dialog.Trigger>
-        <Button>{t('title')}</Button>
+        <Button onClick={() => setDialogOpen(true)}>{t('title')}</Button>
         </Dialog.Trigger>
         <Dialog.Content className='fixed w-fit'>
         <div className='flex flex-col gap-3 relative'>
@@ -190,7 +196,7 @@ const CreateAccountForm = ({companies, roles} : {companies: Array<any>, roles: A
                 <Button onClick={onButtonClick}>{t('avatar_btn')}</Button>
                 </label>
                 <div className='flex gap-4'>
-                <Button color='gray'>{r('cancel')}</Button>
+                <Button onClick={cancelForm} color='gray'>{r('cancel')}</Button>
                 <Button onClick={() => formSubbmit()} disabled={!formValid}>{r('save')}</Button>
                 </div>
             </div>

@@ -9,10 +9,7 @@ const UsersLlist = ({users}: any) => {
     const [usersList, setUsersList] = useState(users)
     const [modalUsers, setModalUsers] = useState({})
     const [sortedUsersList, setSortUsersList] = useState<Array<any>>(users)
-    const [filteredUsers, setFilteredUsers] = useState<Array<any>>()
-    const [sortOrder, setSortOrder] = useState('asc')
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    console.log(users);
     
     const openAndCloseModal = (action: string, id:number = 0) =>{
         action === 'open' ? setIsOpen(true):setIsOpen(false) 
@@ -131,7 +128,6 @@ const UsersLlist = ({users}: any) => {
             break;
         }         
     }
-
 
     const filterData = (key:string, data: string) =>{
         const usersToFilter = [...users]

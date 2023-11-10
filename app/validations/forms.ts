@@ -12,6 +12,24 @@ export const createCompanySchema = z.object({
     .any()
 })
 
+export const createUserSchema = z.object({
+    firstName: z.string().min(2, 'name_not_valid_short').max(70, 'name_not_valid_long').refine((value) => /^[a-zA-Z]+[-'s]?[a-zA-Z ]+$/.test(value), 'name_not_valid_characters'),
+    lastName: z.string().min(2, 'name_not_valid_short').max(70, 'name_not_valid_long').refine((value) => /^[a-zA-Z]+[-'s]?[a-zA-Z ]+$/.test(value), 'name_not_valid_characters'),
+    password: z.string().refine((value) => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(value), 'password_not_valid_weak'),
+    email: z.string().email('email_not_valid'),
+    company: z.any(),
+    image: z.any()
+})
+
+export const updateUserSchema = z.object({
+    firstName: z.string().min(2, 'name_not_valid_short').max(70, 'name_not_valid_long').refine((value) => /^[a-zA-Z]+[-'s]?[a-zA-Z ]+$/.test(value), 'name_not_valid_characters'),
+    lastName: z.string().min(2, 'name_not_valid_short').max(70, 'name_not_valid_long').refine((value) => /^[a-zA-Z]+[-'s]?[a-zA-Z ]+$/.test(value), 'name_not_valid_characters'),
+    password: z.string().refine((value) => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(value), 'password_not_valid_weak'),
+    email: z.string().email('email_not_valid'),
+    company: z.any(),
+    image: z.any()
+})
+
 export const updateCompanySchema = z.object({
     id: z.number(),
     name: z.string().min(2, 'name_not_valid_short').max(70, 'name_not_valid_long').refine((value) => /^[a-zA-Z]+[-'s]?[a-zA-Z ]+$/.test(value), 'name_not_valid_characters').optional(),
